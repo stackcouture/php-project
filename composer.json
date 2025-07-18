@@ -1,0 +1,5 @@
+{
+  "name": "naveen/php-auth",
+  "description": "Simple PHP login/register with Composer and Docker",
+  "require": {}
+}
