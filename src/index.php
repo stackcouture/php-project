@@ -1,4 +1,6 @@
-<?php include 'inc/header.php';?>
+<?php 
+ob_start();
+include 'inc/header.php';?>
 <?php include 'inc/slider.php';?>
 
  <div class="main">
@@ -59,4 +61,6 @@
     </div>
  </div>
 
- <?php include 'inc/footer.php';?>
+ <?php include 'inc/footer.php';
+ob_end_flush();
+?>

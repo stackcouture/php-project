@@ -28,6 +28,10 @@ SET time_zone = "+00:00";
 -- Table structure for table `tbl_admin`
 --
 
+CREATE DATABASE IF NOT EXISTS db_shop;
+
+USE db_shop;
+
 CREATE TABLE `tbl_admin` (
   `adminId` int(11) NOT NULL,
   `adminName` varchar(255) NOT NULL,
