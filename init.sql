@@ -29,8 +29,11 @@ SET time_zone = "+00:00";
 --
 
 CREATE DATABASE IF NOT EXISTS db_shop;
-
 USE db_shop;
+
+CREATE USER IF NOT EXISTS 'root'@'%' IDENTIFIED BY 'userpass';
+GRANT ALL PRIVILEGES ON db_shop.* TO 'root'@'%';
+FLUSH PRIVILEGES;
 
 CREATE TABLE `tbl_admin` (
   `adminId` int(11) NOT NULL,
