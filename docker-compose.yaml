@@ -7,7 +7,7 @@ services:
     ports:
       - "${APP_PORT}:8080"
     volumes:
-      - ./src:/var/www/html
+      - ./:/var/www/html 
     depends_on:
       - db
     networks:
