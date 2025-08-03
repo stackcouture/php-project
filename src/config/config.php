@@ -1,5 +1,6 @@
 <?php
-require 'vendor/autoload.php';
+define('BASE_PATH', dirname(__DIR__, 2));
+require_once BASE_PATH . '/vendor/autoload.php';
 
 use Aws\SecretsManager\SecretsManagerClient;
 use Aws\Exception\AwsException;

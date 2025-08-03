@@ -2,26 +2,25 @@ version: '3.8'
 
 services:
   web:
-    build: .
-    container_name: ${APP_NAME:-php-app}    # fallback app name if not set
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: php-app
     ports:
-      - "${APP_PORT:-8080}:8080"             # fallback port 8080 if not set
-    volumes:
-      - ./src:/var/www/html                   # better to mount only your src folder, not whole project root
-      - ./composer.json:/var/www/html/composer.json:ro
+      - "8080:8080"
     depends_on:
       - db
-    networks:
-      - app-network
     environment:
       DB_HOST: db
       AWS_REGION: ap-south-1
       AWS_SECRET_NAME: myapp/db_my_creds
     restart: unless-stopped
+    networks:
+      - app-network
 
   db:
     image: mysql:5.7
-    container_name: mysql-db
+    container_name: mysql-db-prod
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: rootpass
@@ -29,10 +28,9 @@ services:
       MYSQL_USER: root
       MYSQL_PASSWORD: rootpass
     ports:
-      - "${MYSQL_PORT:-3306}:3306"
+      - "3306:3306"
     volumes:
       - db_data:/var/lib/mysql
-      - ./init.sql:/docker-entrypoint-initdb.d/init.sql:ro
     networks:
       - app-network
     healthcheck:
@@ -48,7 +46,7 @@ services:
     depends_on:
       - db
     ports:
-      - "${PHPMYADMIN_PORT:-8081}:80"          # default phpmyadmin port 8081 fallback
+      - "8081:80" 
     environment:
       PMA_HOST: db
       PMA_USER: root

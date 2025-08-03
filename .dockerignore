@@ -1,11 +1,9 @@
-# Git
 .git
-.gitignore
-
-# Environment files
-.env
-
-# Docker
+node_modules
+vendor
+tests
+README.md
 .dockerignore
-
-vendor/
+Dockerfile
+docker-compose*
+.env
