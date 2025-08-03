@@ -1,10 +1,10 @@
 <?php
-
-include 'lib/Session.php';
+// Use require_once/include_once to avoid multiple inclusions
+include_once 'lib/Session.php';
 Session::init();
 
-include 'lib/Database.php';
-include 'helpers/Formate.php';
+include_once 'lib/Database.php';
+include_once 'helpers/Formate.php';
 
 spl_autoload_register(function($class){
     include_once "classess/" . $class . ".php";

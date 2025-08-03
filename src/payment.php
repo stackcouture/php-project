@@ -1,7 +1,7 @@
 <?php 
 ob_start();
-include 'inc/init.php';
-include 'inc/header.php';
+include_once 'inc/init.php';
+include_once 'inc/header.php';
 $login = Session::get("cuslogin");
 if ($login == false) {
     header("Location:login.php");

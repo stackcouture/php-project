@@ -1,6 +1,6 @@
 <?php
 ob_start();
-include 'init.php';
+include_once 'init.php';
 ?>
 <!DOCTYPE HTML>
 <html lang="en-US">
