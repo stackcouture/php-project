@@ -3,11 +3,12 @@ version: '3.8'
 services:
   web:
     build: .
-    container_name: ${APP_NAME}
+    container_name: ${APP_NAME:-php-app}    # fallback app name if not set
     ports:
-      - "${APP_PORT}:8080"
+      - "${APP_PORT:-8080}:8080"             # fallback port 8080 if not set
     volumes:
-      - ./:/var/www/html 
+      - ./src:/var/www/html                   # better to mount only your src folder, not whole project root
+      - ./composer.json:/var/www/html/composer.json:ro
     depends_on:
       - db
     networks:
@@ -23,19 +24,22 @@ services:
     container_name: mysql-db
     restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: rootpass  # minimally needed for DB initialization
+      MYSQL_ROOT_PASSWORD: rootpass
       MYSQL_DATABASE: db_shop
       MYSQL_USER: root
       MYSQL_PASSWORD: rootpass
     ports:
-      - "${MYSQL_PORT}:3306"
+      - "${MYSQL_PORT:-3306}:3306"
     volumes:
       - db_data:/var/lib/mysql
-      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql:ro
     networks:
       - app-network
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
 
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
@@ -44,7 +48,7 @@ services:
     depends_on:
       - db
     ports:
-      - "${PHPMYADMIN_PORT}:80"
+      - "${PHPMYADMIN_PORT:-8081}:80"          # default phpmyadmin port 8081 fallback
     environment:
       PMA_HOST: db
       PMA_USER: root

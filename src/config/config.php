@@ -13,7 +13,13 @@ function fetchSecrets($region, $secretName) {
     try {
         $result = $client->getSecretValue(['SecretId' => $secretName]);
         $secretString = $result['SecretString'];
-        return json_decode($secretString, true);
+        $secrets = json_decode($secretString, true);
+
+        if (!isset($secrets['MYSQL_DATABASE'], $secrets['MYSQL_USER'], $secrets['MYSQL_PASSWORD'])) {
+            die("Error: Incomplete database credentials received from Secrets Manager.");
+        }
+
+        return $secrets;
     } catch (AwsException $e) {
         die("Error fetching secrets: " . $e->getMessage());
     }
@@ -28,5 +34,3 @@ define('DB_HOST', getenv('DB_HOST') ?: 'db');
 define('DB_NAME', $secrets['MYSQL_DATABASE']);
 define('DB_USER', $secrets['MYSQL_USER']);
 define('DB_PASS', $secrets['MYSQL_PASSWORD']);
-
-?>
