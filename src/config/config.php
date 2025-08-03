@@ -1,5 +1,5 @@
 <?php
-require_once __DIR__ . '/../vendor/autoload.php';
+require_once '/var/www/html/vendor/autoload.php';
 
 use Aws\SecretsManager\SecretsManagerClient;
 use Aws\Exception\AwsException;
@@ -12,25 +12,23 @@ function fetchSecrets($region, $secretName) {
 
     try {
         $result = $client->getSecretValue(['SecretId' => $secretName]);
-        $secretString = $result['SecretString'];
-        $secrets = json_decode($secretString, true);
-
-        if (!isset($secrets['MYSQL_DATABASE'], $secrets['MYSQL_USER'], $secrets['MYSQL_PASSWORD'])) {
-            die("Error: Incomplete database credentials received from Secrets Manager.");
+        if (!isset($result['SecretString'])) {
+            throw new Exception("SecretString missing in AWS response");
         }
-
-        return $secrets;
+        return json_decode($result['SecretString'], true);
     } catch (AwsException $e) {
-        die("Error fetching secrets: " . $e->getMessage());
+        die("AWS Secrets Manager Error: " . $e->getAwsErrorMessage());
+    } catch (Exception $e) {
+        die("Secret fetch failed: " . $e->getMessage());
     }
 }
 
-$region = getenv('AWS_REGION') ?: 'us-east-1';
-$secretName = getenv('AWS_SECRET_NAME') ?: 'myapp/db_creds';
+$region = getenv('AWS_REGION') ?: 'ap-south-1';
+$secretName = getenv('AWS_SECRET_NAME') ?: 'myapp/db_my_creds';
 
 $secrets = fetchSecrets($region, $secretName);
 
 define('DB_HOST', getenv('DB_HOST') ?: 'db');
-define('DB_NAME', $secrets['MYSQL_DATABASE']);
-define('DB_USER', $secrets['MYSQL_USER']);
-define('DB_PASS', $secrets['MYSQL_PASSWORD']);
+define('DB_NAME', $secrets['MYSQL_DATABASE'] ?? 'default_db');
+define('DB_USER', $secrets['MYSQL_USER'] ?? 'default_user');
+define('DB_PASS', $secrets['MYSQL_PASSWORD'] ?? 'default_pass');
