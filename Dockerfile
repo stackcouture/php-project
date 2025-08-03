@@ -1,48 +1,44 @@
 FROM php:8.2-apache
 
-# Set environment variables for non-interactive apt installs
+# Set environment variable for non-interactive apt installs
 ENV DEBIAN_FRONTEND=noninteractive
 
-# Install MySQLi and unzip for Composer
+# Install required packages and PHP extensions
 RUN apt-get update && apt-get install -y \
     unzip \
     curl \
+    git \
     libzip-dev \
-    && docker-php-ext-install mysqli \
-    && apt-get clean \
-    && rm -rf /var/lib/apt/lists/*
+    libonig-dev \
+  && docker-php-ext-install pdo_mysql zip \
+  && apt-get clean \
+  && rm -rf /var/lib/apt/lists/*
 
 # Enable Apache mod_rewrite
 RUN a2enmod rewrite
 
-# Install Composer globally
-COPY --from=composer:2.7 /usr/bin/composer /usr/bin/composer
+# Install Composer globally (copy from official composer image)
+COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
-# Create a non-root user and group
-RUN groupadd -g 1000 appuser \
-    && useradd -u 1000 -g appuser -m -s /bin/bash appuser
+# Set working directory
+WORKDIR /var/www/html
 
-# Change ownership of Apache web root to the non-root user
-RUN chown -R appuser:appuser /var/www/html \
-    /var/log/apache2 /var/lock/apache2 /var/run/apache2
+# Copy application source code
+COPY ./src /var/www/html
 
+# Install AWS SDK for PHP via Composer
+RUN composer require aws/aws-sdk-php --no-interaction --prefer-dist --optimize-autoloader
 
-# Change Apache user and group to appuser
-RUN sed -i 's/APACHE_RUN_USER=.*/APACHE_RUN_USER=appuser/' /etc/apache2/envvars && \
-    sed -i 's/APACHE_RUN_GROUP=.*/APACHE_RUN_GROUP=appuser/' /etc/apache2/envvars
+# Fix permissions for www-data user
+RUN chown -R www-data:www-data /var/www/html
 
-# Change Apache to listen on port 8080
-RUN sed -i 's/Listen 80/Listen 8080/' /etc/apache2/ports.conf && \
-    sed -i 's/<VirtualHost \*:80>/<VirtualHost \*:8080>/' /etc/apache2/sites-available/000-default.conf
+# Change Apache to listen on port 8080 instead of 80
+RUN sed -i 's/Listen 80/Listen 8080/' /etc/apache2/ports.conf \
+ && sed -i 's/<VirtualHost \*:80>/<VirtualHost \*:8080>/' /etc/apache2/sites-available/000-default.conf
 
-# Expose port 8080
+# Expose port 8080 for container
 EXPOSE 8080
 
-# Switch to non-root user
-USER appuser
-
+# Healthcheck to verify container is serving the app
 HEALTHCHECK --interval=30s --timeout=5s --start-period=10s --retries=3 \
   CMD curl --fail http://localhost:8080/ || exit 1
-
-# Set workdir
-WORKDIR /var/www/html

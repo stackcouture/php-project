@@ -7,11 +7,9 @@ mkdir -p "$SECRETS_DIR"
 
 declare -A secrets_map=(
   ["MYSQL_ROOT_PASSWORD"]="myapp/mysql_root_password"
+  ["MYSQL_DATABASE"]="myapp/mysql_database"
   ["MYSQL_USER"]="myapp/mysql_user"
   ["MYSQL_PASSWORD"]="myapp/mysql_password"
-  ["MYSQL_DATABASE"]="myapp/mysql_database"
-  ["PMA_USER"]="myapp/phpmyadmin_user"
-  ["PMA_PASSWORD"]="myapp/phpmyadmin_password"
 )
 
 echo "🔐 Fetching AWS secrets..."

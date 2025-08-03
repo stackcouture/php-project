@@ -1,20 +1,32 @@
 <?php
-// define('DB_HOST', getenv('DB_HOST') ?: 'db');
-// define('DB_NAME', getenv('DB_NAME') ?: 'db_shop');
-// define('DB_USER', getenv('DB_USER') ?: 'root');
-// define('DB_PASS', getenv('DB_PASS') ?: 'rootpass');
+require 'vendor/autoload.php';
 
-function get_env_secret($key, $default = null) {
-    $file = getenv("${key}_FILE");
-    if ($file && file_exists($file)) {
-        return trim(file_get_contents($file));
+use Aws\SecretsManager\SecretsManagerClient;
+use Aws\Exception\AwsException;
+
+function fetchSecrets($region, $secretName) {
+    $client = new SecretsManagerClient([
+        'version' => 'latest',
+        'region' => $region,
+    ]);
+
+    try {
+        $result = $client->getSecretValue(['SecretId' => $secretName]);
+        $secretString = $result['SecretString'];
+        return json_decode($secretString, true);
+    } catch (AwsException $e) {
+        die("Error fetching secrets: " . $e->getMessage());
     }
-    return getenv($key) ?: $default;
 }
 
+$region = getenv('AWS_REGION') ?: 'us-east-1';
+$secretName = getenv('AWS_SECRET_NAME') ?: 'myapp/db_creds';
+
+$secrets = fetchSecrets($region, $secretName);
+
 define('DB_HOST', getenv('DB_HOST') ?: 'db');
-define('DB_NAME', get_env_secret('DB_NAME', 'default_db'));
-define('DB_USER', get_env_secret('DB_USER', 'default_user'));
-define('DB_PASS', get_env_secret('DB_PASS', 'default_pass'));
+define('DB_NAME', $secrets['MYSQL_DATABASE']);
+define('DB_USER', $secrets['MYSQL_USER']);
+define('DB_PASS', $secrets['MYSQL_PASSWORD']);
 
 ?>
