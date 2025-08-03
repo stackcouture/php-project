@@ -29,7 +29,7 @@ COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 WORKDIR /var/www/html
 
 # Copy only composer files first to leverage Docker layer caching
-COPY ./composer.json ./composer.lock ./
+COPY ./composer.json ./
 
 # Install dependencies
 RUN composer install --no-interaction --prefer-dist --optimize-autoloader
