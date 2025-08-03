@@ -15,8 +15,8 @@ services:
       AWS_REGION: ap-south-1
       AWS_SECRET_NAME: myapp/db_my_creds
     restart: unless-stopped
-    volumes:
-      - ./src:/var/www/html
+    # volumes:
+    #   - ./src:/var/www/html/src
     networks:
       - app-network
 
