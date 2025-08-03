@@ -113,13 +113,14 @@ $msg = "<span class='error'>Product Not Deleted !</span>";
 		$getPro = $this->db->select($query);
 		if ($getPro) {
 			while ($result = $getPro->fetch_assoc()) {
+				$date = date('Y-m-d H:i:s');
 				$productId = $result['productId'];
 				$productName = $result['productName'];
 				$quantity = $result['quantity'];
 				$price = $result['price'] * $quantity;
 				$image = $result['image'];
 
-				$query = "INSERT INTO tbl_order(cmrId,productId,productName,quantity,price,image) VALUES('$cmrId','$productId','$productName','$quantity','$price','$image') ";
+				$query = "INSERT INTO tbl_order(cmrId,productId,productName,quantity,price,date) VALUES('$cmrId','$productId','$productName','$quantity','$price','$date') ";
 			$inserted_row = $this->db->insert($query);
 			}
 		}
