@@ -1,6 +1,5 @@
 .git
 node_modules
-vendor
 tests
 README.md
 .dockerignore
