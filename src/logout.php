@@ -1,5 +1,5 @@
 <?php
-include_once 'init.php';
+include_once 'inc/init.php';
 
 $cmrId = Session::get("cmrId");
 if ($cmrId) {
