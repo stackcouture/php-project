@@ -1,7 +1,9 @@
 {
   "name": "docker/php-app",
-  "description": "Simple PHP App in Docker with AWS Secrets Manager",
+  "description": "Simple PHP App in Docker using AWS Secrets Manager",
+  "type": "project",
   "require": {
+    "php": "^8.2",
     "vlucas/phpdotenv": "^5.5",
     "aws/aws-sdk-php": "^3.0"
   },
@@ -12,11 +14,16 @@
   },
   "scripts": {
     "post-install-cmd": [
-      "@composer dump-autoload"
+      "composer dump-autoload -o"
     ],
     "post-update-cmd": [
-      "@composer dump-autoload"
+      "composer dump-autoload -o"
     ]
+  },
+  "config": {
+    "preferred-install": "dist",
+    "optimize-autoloader": true,
+    "sort-packages": true
   },
   "minimum-stability": "stable",
   "prefer-stable": true
