@@ -1,4 +1,4 @@
-# Stage 1: Builder
+# Stage 1: Builder (for composer install and building app)
 FROM php:8.2-apache AS builder
 
 ENV DEBIAN_FRONTEND=noninteractive
@@ -22,9 +22,18 @@ RUN composer install --no-interaction --prefer-dist --no-dev --optimize-autoload
 COPY ./src/ ./src
 RUN chown -R www-data:www-data /app
 
-# Stage 2: Runtime image
+
+# Stage 2: Runtime image (final container for running app)
 FROM php:8.2-apache
 
+ENV DEBIAN_FRONTEND=noninteractive
+
+# Install required extensions in runtime image too
+RUN apt-get update && apt-get install -y libzip-dev zip unzip curl git \
+ && docker-php-ext-install pdo_mysql mysqli zip \
+ && apt-get clean && rm -rf /var/lib/apt/lists/*
+
+# Enable apache mod_rewrite, setup ServerName and ports
 RUN a2enmod rewrite \
  && echo "ServerName localhost" >> /etc/apache2/apache2.conf \
  && sed -i 's|DocumentRoot /var/www/html|DocumentRoot /var/www/html/src|g' /etc/apache2/sites-available/000-default.conf \
@@ -33,7 +42,9 @@ RUN a2enmod rewrite \
 
 WORKDIR /var/www/html
 
+# Copy built app files from builder stage
 COPY --from=builder /app /var/www/html
+
 RUN chown -R www-data:www-data /var/www/html
 
 EXPOSE 8080
