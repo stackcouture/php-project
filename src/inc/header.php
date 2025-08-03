@@ -1,30 +1,7 @@
 <?php
-
-include 'lib/Session.php';
-Session::init();
-
-include 'lib/Database.php';
-include 'helpers/Formate.php';
-spl_autoload_register(function($class){
-include_once "classess/".$class.".php";
-
-});
-
-$db = new Database();
-$fm = new Format();
-$pd = new Product();
-$cat = new Category();
-$ct = new Cart();
-$cmr = new Customer();
-
-  header("Cache-Control: no-cache, must-revalidate");
-  header("Pragma: no-cache"); 
-  header("Expires: Sat, 26 Jul 1997 05:00:00 GMT"); 
-  header("Cache-Control: max-age=2592000");
+ob_start();
+include 'init.php';
 ?>
-
-
-
 <!DOCTYPE HTML>
 <html lang="en-US">
 <head>
@@ -106,16 +83,6 @@ $cmr = new Customer();
 							</a>
 						</div>
 			      </div>
-<?php 
-if (isset($_GET['cid'])) {
-	$cmrId = Session::get("cmrId");
-	$delData = $ct->delCustomerCart();
-	$delComp = $pd->delCompareData($cmrId);
-	Session::destroy();
-}
-
-
- ?>
 
 		   <div class="login">
 
@@ -124,7 +91,7 @@ $login = Session::get("cuslogin");
 if ($login == false) {  ?>
     	<a href="login.php">Login</a>
 <?php }else{ ?>
-<a href="?cid=<?php Session::get('cmrId') ?>">Logout</a>
+<a href="logout.php">Logout</a>
 <?php }
 ?>
 

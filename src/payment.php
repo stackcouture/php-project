@@ -1,11 +1,12 @@
-<?php include 'inc/header.php';?>
-
 <?php 
+ob_start();
+include 'inc/init.php';
+include 'inc/header.php';
 $login = Session::get("cuslogin");
 if ($login == false) {
     header("Location:login.php");
 }
- ?>
+?>
 <style>
 .payment1{width: 500px;min-height: 200px;text-align: center;border: 1px solid #ddd;margin: 0 auto;padding: 50px;}	
 .payment1 h2{border-bottom: 1px solid #ddd;margin-bottom: 40px;padding-bottom: 10px;}
@@ -29,4 +30,7 @@ if ($login == false) {
  		</div>
  	</div>
 	</div>
-  <?php include 'inc/footer.php';?>
+<?php 
+include 'inc/footer.php';
+ob_end_flush();
+?>
