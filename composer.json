@@ -1,5 +1,12 @@
 {
-  "name": "naveen/php-auth",
-  "description": "Simple PHP login/register with Composer and Docker",
-  "require": {}
+  "name": "docker/php-app",
+  "description": "Simple PHP App in Docker",
+  "require": {
+    "vlucas/phpdotenv": "^5.5"
+  },
+  "autoload": {
+    "psr-4": {
+      "App\\": "src/"
+    }
+  }
 }

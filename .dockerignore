@@ -1,0 +1,11 @@
+# Git
+.git
+.gitignore
+
+# Environment files
+.env
+
+# Docker
+.dockerignore
+
+vendor/
