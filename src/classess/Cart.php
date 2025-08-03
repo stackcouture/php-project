@@ -120,7 +120,7 @@ $msg = "<span class='error'>Product Not Deleted !</span>";
 				$price = $result['price'] * $quantity;
 				$image = $result['image'];
 
-				$query = "INSERT INTO tbl_order(cmrId,productId,productName,quantity,price,date) VALUES('$cmrId','$productId','$productName','$quantity','$price','$date') ";
+				$query = "INSERT INTO tbl_order(cmrId,productId,productName,quantity,price,image,date) VALUES('$cmrId','$productId','$productName','$quantity','$price','$image','$date') ";
 			$inserted_row = $this->db->insert($query);
 			}
 		}
