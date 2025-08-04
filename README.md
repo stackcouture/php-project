@@ -43,3 +43,23 @@ This is a demo project to showcase best practices for securely accessing secrets
    ```bash
    git clone https://github.com/your-username/php-docker-aws-secrets.git
    cd php-docker-aws-secrets
+
+## environment-configuration
+
+This project uses a `.env` file to store environment-specific variables securely. These variables include application settings, database credentials, and AWS Secrets Manager configuration.
+
+### 1. Create the `.env` File
+
+In the root directory of the project, create a `.env` file and define the following environment variables:
+
+```env
+APP_NAME=my_php_app
+APP_PORT=8080
+AWS_REGION=us-east-1
+AWS_SECRET_NAME=myapp/db_creds
+MYSQL_USER=myuser
+MYSQL_PASSWORD=mypassword
+MYSQL_ROOT_PASSWORD=secretpassword
+MYSQL_DATABASE=mydatabase
+
+💡 Tip: Do not commit your .env file to version control. Make sure it is listed in your .gitignore.
