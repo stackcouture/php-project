@@ -35,8 +35,7 @@
 				<div class="col_1_of_4 span_1_of_4">
 					<h4>Contact</h4>
 						<ul>
-							<li><span>+88-01622425286</span></li>
-							<li><span>+88-01762100187</span></li>
+							<li><span>+91-9700779728</span></li>
 						</ul>
 						<div class="social-icons">
 							<h4>Follow Us</h4>

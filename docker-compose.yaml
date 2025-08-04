@@ -50,8 +50,8 @@ services:
       - "8081:80" 
     environment:
       PMA_HOST: db
-      PMA_USER: root
-      PMA_PASSWORD: rootpass
+      PMA_USER: ${MYSQL_USER}
+      PMA_PASSWORD: ${MYSQL_PASSWORD}
     networks:
       - app-network
 
