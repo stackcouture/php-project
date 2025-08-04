@@ -247,7 +247,7 @@ Verify Environment Variables: Double-check that your .env file is properly confi
 
 ---
 
-## 🤝 Contributing
+## Contributing
 
 We welcome contributions to improve this project! Please follow the steps below to contribute:
 
@@ -256,23 +256,32 @@ We welcome contributions to improve this project! Please follow the steps below 
 
 2. Clone your fork
 
+    ```bash
     git clone https://github.com/your-username/repository-name.git
     cd repository-name
+    ```
 
 3. Create a new feature branch
+    ```bash
     git checkout -b feature/my-feature
+    ```
 
 4. Make your changes
     Add your code, documentation, or improvements.
 
 5. Commit your changes
-
+    ```bash
     git commit -m "Add new feature"
+    ```
 
 6. Push to your forked repository
-
+    ```bash
     git push origin feature/my-feature
+    ```
 
 7. Open a Pull Request
+    ```bash
     Go to the original repository and click Compare & pull request.
     Clearly describe what your changes do and why they are needed.
+    ```
+---
