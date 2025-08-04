@@ -166,3 +166,72 @@ The secrets will be injected into your application dynamically, ensuring your cr
 
 ---
 
+## Docker Compose Configuration
+
+The docker-compose.yml file defines the services required for the application:
+
+Web Service (PHP): The PHP app running with Apache and Docker.
+
+MySQL Database: A MySQL container used to store application data.
+
+phpMyAdmin: A web-based interface to manage the MySQL database.
+
+Sample Docker Compose
+
+```bash
+version: '3'
+
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: ${APP_NAME}
+    ports:
+      - "${APP_PORT}:8080"
+    depends_on:
+      - db
+    environment:
+      DB_HOST: db
+      AWS_REGION: ${AWS_REGION}
+      AWS_SECRET_NAME: ${AWS_SECRET_NAME}
+    restart: unless-stopped
+
+  db:
+    image: mysql:5.7
+    container_name: mysql-db-prod
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    volumes:
+      - db_data:/var/lib/mysql
+    networks:
+      - app-network
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin:5.1.0
+    container_name: phpmyadmin
+    restart: always
+    depends_on:
+      - db
+    ports:
+      - "8081:80"
+    environment:
+      PMA_HOST: db
+      PMA_USER: ${MYSQL_USER}
+      PMA_PASSWORD: ${MYSQL_PASSWORD}
+    networks:
+      - app-network
+
+volumes:
+  db_data:
+
+networks:
+  app-network:
+    driver: bridge
+```
+
+---
