@@ -44,22 +44,70 @@ This is a demo project to showcase best practices for securely accessing secrets
    git clone https://github.com/your-username/php-docker-aws-secrets.git
    cd php-docker-aws-secrets
 
-## environment-configuration
 
-This project uses a `.env` file to store environment-specific variables securely. These variables include application settings, database credentials, and AWS Secrets Manager configuration.
+## Environment Configuration
 
-### 1. Create the `.env` File
+This project uses `.env` files to store environment-specific variables securely. These include configuration for the application and sensitive database credentials.
 
-In the root directory of the project, create a `.env` file and define the following environment variables:
+---
 
-```env
+### 1. Create a Secret in AWS Secrets Manager
+
+Before starting the project, create a secret in AWS Secrets Manager containing your database credentials.
+
+Use the following AWS CLI command:
+
+```bash
+aws secretsmanager create-secret \
+  --name myapp/db_app_credes \
+  --secret-string '{
+    "DB_HOST": "db",
+    "MYSQL_DATABASE": "db_shop",
+    "MYSQL_USER": "appuser",
+    "MYSQL_PASSWORD": "appuser",
+    "MYSQL_ROOT_PASSWORD": "rootpass",
+    "PMA_USER": "root",
+    "PMA_PASSWORD": "rootpass"
+}'
+
+🔐 Make sure your AWS CLI is configured and the IAM user/role has secretsmanager:CreateSecret and secretsmanager:GetSecretValue permissions.
+
+2. Create the .env File
+In the root directory of the project, create a .env file:
+
 APP_NAME=my_php_app
 APP_PORT=8080
 AWS_REGION=us-east-1
-AWS_SECRET_NAME=myapp/db_creds
+AWS_SECRET_NAME=myapp/db_app_credes
 MYSQL_USER=myuser
 MYSQL_PASSWORD=mypassword
 MYSQL_ROOT_PASSWORD=secretpassword
 MYSQL_DATABASE=mydatabase
 
-💡 Tip: Do not commit your .env file to version control. Make sure it is listed in your .gitignore.
+📝 This file contains placeholder values and will be updated with actual credentials fetched from AWS Secrets Manager.
+
+3. Fetch Secrets with fetch_secrets.sh
+Run the following command to fetch your credentials from AWS Secrets Manager and update the .env file automatically:
+
+AWS_REGION="us-east-1" AWS_SECRET_NAME="myapp/db_app_credes" bash fetch_secrets.sh
+✅ What This Script Does
+Retrieves the secret from AWS Secrets Manager using the specified region and secret name.
+
+Parses the JSON output of the secret.
+
+Inserts the credentials (e.g., MYSQL_USER, MYSQL_PASSWORD, etc.) into the .env file.
+
+Leaves existing non-secret values (like APP_NAME, APP_PORT) untouched.
+
+🔐 Best Practices
+Always add .env to your .gitignore file:
+
+echo ".env" >> .gitignore
+Do not commit sensitive values to version control.
+
+Use least-privilege IAM roles or users when accessing Secrets Manager.
+
+---
+
+Let me know if you'd like me to include an example of the `fetch_secrets.sh` script in the README or as a separate file reference.
+
