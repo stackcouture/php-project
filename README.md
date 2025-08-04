@@ -111,35 +111,58 @@ Use least-privilege IAM roles or users when accessing Secrets Manager.
 
 Let me know if you'd like me to include an example of the `fetch_secrets.sh` script in the README or as a separate file reference.
 
+```
+
 ---
 
 ## Running the Application
 
-Follow these steps to build and run the PHP application along with MySQL and phpMyAdmin using Docker Compose:
+This project uses `.env` files to store environment-specific variables securely. These include configuration for the application and sensitive database credentials.
+
 
 ```bash
-
-1. Build Docker Images
-
+1. Build Docker Images:
 To build the Docker images for the PHP application, MySQL, and phpMyAdmin, run:
 
-bash
-docker-compose build
-This will ensure all images are created based on the configuration defined in the Dockerfile and docker-compose.yml.
 
-2. Start the Containers
-Once the images are built, start all the services using:
+docker-compose build
+2. Start the Containers:
+To start the application, use Docker Compose:
+
 
 docker-compose up -d
--d runs the containers in the background (detached mode).
+This will start the application in the background.
 
-3. Access the Application
-After the containers are running, you can access the services through your browser:
+3. Access the Application:
+After the containers are up, you can access:
 
 PHP Application: http://localhost:8080
 
 phpMyAdmin: http://localhost:8081
+```
+---
 
-⚠️ Ensure the ports 8080 and 8081 are free and not blocked by firewall or in use by another process. can you please update README.md running the application is not set
+## Accessing Secrets from AWS
+
+Using AWS SDK for PHP
+
+Install AWS SDK for PHP (if not already done by Composer):
+
+Run the following to install the AWS SDK:
+
+```bash
+composer require aws/aws-sdk-php
+```
+
+Fetching Secrets:
+
+In your PHP application, use the AWS SDK to fetch the secrets for database access. Example:
+
+```bash
+$secretValue = $client->getSecretValue(['SecretId' => $secretName]);
+```
+
+The secrets will be injected into your application dynamically, ensuring your credentials are never hard-coded.
 
 ---
+
