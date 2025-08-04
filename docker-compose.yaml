@@ -13,10 +13,8 @@ services:
     environment:
       DB_HOST: db
       AWS_REGION: ap-south-1
-      AWS_SECRET_NAME: myapp/db_my_creds
+      AWS_SECRET_NAME: myapp/db_app_credes
     restart: unless-stopped
-    # volumes:
-    #   - ./src:/var/www/html/src
     networks:
       - app-network
 
@@ -25,10 +23,10 @@ services:
     container_name: mysql-db-prod
     restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: rootpass
-      MYSQL_DATABASE: db_shop
-      MYSQL_USER: appuser
-      MYSQL_PASSWORD: appuser
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
     ports:
       - "3306:3306"
     volumes:
