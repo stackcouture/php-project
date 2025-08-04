@@ -111,3 +111,31 @@ Use least-privilege IAM roles or users when accessing Secrets Manager.
 
 Let me know if you'd like me to include an example of the `fetch_secrets.sh` script in the README or as a separate file reference.
 
+## Running the Application
+
+Follow these steps to build and run the PHP application along with MySQL and phpMyAdmin using Docker Compose:
+
+---
+
+### 1. Build Docker Images
+
+To build the Docker images for the PHP application, MySQL, and phpMyAdmin, run:
+
+```bash
+docker-compose build
+This will ensure all images are created based on the configuration defined in the Dockerfile and docker-compose.yml.
+
+2. Start the Containers
+Once the images are built, start all the services using:
+
+docker-compose up -d
+-d runs the containers in the background (detached mode).
+
+3. Access the Application
+After the containers are running, you can access the services through your browser:
+
+PHP Application: http://localhost:8080
+
+phpMyAdmin: http://localhost:8081
+
+⚠️ Ensure the ports 8080 and 8081 are free and not blocked by firewall or in use by another process.
