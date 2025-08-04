@@ -44,20 +44,21 @@ This is a demo project to showcase best practices for securely accessing secrets
    git clone https://github.com/your-username/php-docker-aws-secrets.git
    cd php-docker-aws-secrets
 
+---
 
 ## Environment Configuration
 
 This project uses `.env` files to store environment-specific variables securely. These include configuration for the application and sensitive database credentials.
 
----
 
-### 1. Create a Secret in AWS Secrets Manager
+```bash
+
+1. Create a Secret in AWS Secrets Manager
 
 Before starting the project, create a secret in AWS Secrets Manager containing your database credentials.
 
 Use the following AWS CLI command:
 
-```bash
 aws secretsmanager create-secret \
   --name myapp/db_app_credes \
   --secret-string '{
@@ -109,3 +110,5 @@ Use least-privilege IAM roles or users when accessing Secrets Manager.
 
 
 Let me know if you'd like me to include an example of the `fetch_secrets.sh` script in the README or as a separate file reference.
+
+
