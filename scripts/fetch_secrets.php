@@ -28,7 +28,7 @@ $secretName = getenv('AWS_SECRET_NAME') ?: 'myapp/db_app_credes';
 
 $secrets = fetchSecrets($region, $secretName);
 
-define('DB_HOST', getenv('DB_HOST') ?: 'db');
-define('DB_NAME', $secrets['MYSQL_DATABASE'] ?? 'default_db');
-define('DB_USER', $secrets['MYSQL_USER'] ?? 'default_user');
-define('DB_PASS', $secrets['MYSQL_PASSWORD'] ?? 'default_pass');
+putenv("MYSQL_USER=" . $secrets['MYSQL_USER']);
+putenv("MYSQL_PASSWORD=" . $secrets['MYSQL_PASSWORD']);
+putenv("MYSQL_ROOT_PASSWORD=" . $secrets['MYSQL_ROOT_PASSWORD']);
+putenv("MYSQL_DATABASE=" . $secrets['MYSQL_DATABASE']);

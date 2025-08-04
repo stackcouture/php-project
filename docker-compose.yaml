@@ -12,8 +12,8 @@ services:
       - db
     environment:
       DB_HOST: db
-      AWS_REGION: ap-south-1
-      AWS_SECRET_NAME: myapp/db_app_credes
+      AWS_REGION: ${AWS_REGION}
+      AWS_SECRET_NAME: ${AWS_SECRET_NAME}
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8080"]
       interval: 30s
@@ -58,6 +58,21 @@ services:
       PMA_PASSWORD: ${MYSQL_PASSWORD}
     networks:
       - app-network
+
+  php:
+    image: php:7.4-cli
+    container_name: php-fetch-secrets
+    volumes:
+      - ./scripts:/var/www/html  # Mount your 'scripts' directory to '/var/www/html' inside the container
+    command: php /var/www/html/fetch_secrets.php  # Run the fetch_secrets.php script inside the container
+    environment:
+      AWS_REGION: ${AWS_REGION}
+      AWS_SECRET_NAME: ${AWS_SECRET_NAME}
+      DB_HOST: db
+    networks:
+      - app-network
+    depends_on:
+      - db
 
 volumes:
   db_data:
