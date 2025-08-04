@@ -38,4 +38,8 @@ add_env_var "MYSQL_PASSWORD" "$MYSQL_PASSWORD"
 add_env_var "MYSQL_ROOT_PASSWORD" "$MYSQL_ROOT_PASSWORD"
 add_env_var "MYSQL_DATABASE" "$MYSQL_DATABASE"
 
+echo "APP_NAME=php-app" > .env
+echo "AWS_SECRET_NAME=myapp/db_app_credes" > .env 
+echo "APP_PORT=8080" > .env 
+
 echo "Secrets fetched and environment variables added (if not already present) to .env!"
