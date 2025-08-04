@@ -15,7 +15,6 @@ This project demonstrates how to build and deploy a PHP application using Docker
 - [Docker Compose Configuration](#docker-compose-configuration)
 - [Troubleshooting](#troubleshooting)
 - [Contributing](#contributing)
-- [License](#license)
 
 ---
 
@@ -235,3 +234,45 @@ networks:
 ```
 
 ---
+
+## Troubleshooting
+
+If you encounter any issues, consider the following steps:
+
+Check Docker Logs: Run docker-compose logs to view logs from all containers.
+
+Ensure AWS Credentials: Make sure your AWS credentials (like AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY) are correctly configured.
+
+Verify Environment Variables: Double-check that your .env file is properly configured with all required variables.
+
+---
+
+## 🤝 Contributing
+
+We welcome contributions to improve this project! Please follow the steps below to contribute:
+
+1. Fork the repository
+    Click the Fork button at the top right of the repository page to create your own copy.
+
+2. Clone your fork
+
+    git clone https://github.com/your-username/repository-name.git
+    cd repository-name
+
+3. Create a new feature branch
+    git checkout -b feature/my-feature
+
+4. Make your changes
+    Add your code, documentation, or improvements.
+
+5. Commit your changes
+
+    git commit -m "Add new feature"
+
+6. Push to your forked repository
+
+    git push origin feature/my-feature
+
+7. Open a Pull Request
+    Go to the original repository and click Compare & pull request.
+    Clearly describe what your changes do and why they are needed.
