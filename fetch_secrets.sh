@@ -1,7 +1,14 @@
 #!/bin/bash
 
-AWS_REGION=ap-south-1
-AWS_SECRET_NAME=myapp/db_app_credes
+if [ -z "$AWS_REGION" ]; then
+    echo "Error: AWS_REGION is not set."
+    exit 1
+fi
+
+if [ -z "$AWS_SECRET_NAME" ]; then
+    echo "Error: AWS_SECRET_NAME is not set."
+    exit 1
+fi
 
 SECRET_JSON=$(aws secretsmanager get-secret-value --region $AWS_REGION --secret-id $AWS_SECRET_NAME --query 'SecretString' --output text)
 
