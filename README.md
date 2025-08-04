@@ -107,9 +107,10 @@ Do not commit sensitive values to version control.
 
 Use least-privilege IAM roles or users when accessing Secrets Manager.
 
----
 
 Let me know if you'd like me to include an example of the `fetch_secrets.sh` script in the README or as a separate file reference.
+
+---
 
 ## Running the Application
 
