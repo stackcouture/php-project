@@ -14,7 +14,6 @@ if [ ! -f .env ]; then
     touch .env
 fi
 
-# Function to add a new variable only if it doesn't already exist in the .env file
 add_env_var() {
     local var_name=$1
     local var_value=$2
@@ -31,8 +30,9 @@ add_env_var "MYSQL_PASSWORD" "$MYSQL_PASSWORD"
 add_env_var "MYSQL_ROOT_PASSWORD" "$MYSQL_ROOT_PASSWORD"
 add_env_var "MYSQL_DATABASE" "$MYSQL_DATABASE"
 
-echo "APP_NAME=php-app" >> .env
-echo "AWS_SECRET_NAME=myapp/db_app_credes" >> .env
-echo "APP_PORT=8080" >> .env
+add_env_var "APP_NAME" "php-app"
+add_env_var "AWS_SECRET_NAME" "myapp/db_app_credes"
+add_env_var "APP_PORT" "8080"
+add_env_var "AWS_REGION" "ap-south-1"
 
 echo "Secrets fetched and environment variables added (if not already present) to .env!"
